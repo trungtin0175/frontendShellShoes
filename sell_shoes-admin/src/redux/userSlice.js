@@ -6,7 +6,7 @@ const initialState = {
   numberphone: "",
   // address: '',
   // avatar: '',
-  // access_token: '',
+  accessToken: "",
   // district: '',
   // id: '',
   isAdmin: true,
@@ -23,7 +23,7 @@ export const userSlice = createSlice({
       const {
         fullname = "",
         email = "",
-        // access_token = '',
+        accessToken = "",
         // address = '',
         // district = '',
         numberphone = "",
@@ -41,7 +41,7 @@ export const userSlice = createSlice({
       state.numberphone = numberphone ? numberphone : state.phone;
       // state.avatar = avatar ? avatar : state.avatar;
       // state.id = _id ? _id : state.id;
-      // state.access_token = access_token ? access_token : state.access_token;
+      state.accessToken = accessToken ? accessToken : state.accessToken;
       state.isAdmin = isAdmin ? isAdmin : state.isAdmin;
       // state.city = city ? city : state.city;
       // state.refreshToken = refreshToken ? refreshToken : state.refreshToken;
@@ -56,8 +56,8 @@ export const userSlice = createSlice({
       // state.address = '';
       // state.district = '';
       // state.avatar = '';
-      // state.access_token = '';
-      state.isAdmin = false;
+      state.accessToken = "";
+      state.isAdmin = true;
       // state.city = '';
     },
   },

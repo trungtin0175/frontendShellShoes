@@ -2,6 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const OrderSchema = new Schema({
+    orderProducts: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'detail_order',
+            require: true,
+        },
+    ],
     adress: {
         type: String,
     },

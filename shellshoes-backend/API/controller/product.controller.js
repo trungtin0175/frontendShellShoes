@@ -3,54 +3,74 @@ const CategoryModel = require('../../models/category.model');
 const cloudinary = require('cloudinary').v2;
 
 const productController = {
-    //filter product by categories
+    // api/filterproduct
     filterProduct: async (req, res) => {
-        const id_category = req.query.id_category;
-        const productList = await ProductModel.find(id_category).populate('Category');
-        if (!productList) {
-            res.status(500).json({
-                message: 'Khong tim thay san pham',
+        try {
+            const id_category = req.query._id;
+            const productList = await ProductModel.find({ id_category: id_category })
+                .populate('id_category')
+                .exec();
+            if (!id_category) {
+                return res.status(404).json({
+                    sucess: false,
+                    message: 'The category not found!',
+                });
+            }
+            if (!productList || productList.length === 0) {
+                res.status(404).json({
+                    sucess: false,
+                    message: 'No products found in this category',
+                });
+            }
+            return res.status(200).json({
+                sucess: true,
+                data: productList,
+            });
+        } catch (error) {
+            return res.status(500).json({
+                sucess: false,
+                message: error.message,
             });
         }
-        res.send(productList);
     },
-    //[GET] all products.admin
+    //[GET] api/allproduct
     allProduct: async (req, res) => {
         try {
             const product = await ProductModel.find().populate({
                 path: 'id_category',
                 select: 'name_product oldPrice_product newPrice_product category size image quantity describe detail',
             });
-            res.status(200).json({
+            return res.status(200).json({
                 data: product,
                 sucess: true,
             });
         } catch (err) {
             console.log(err);
-            res.status(500).json({
+            return res.status(500).json({
                 sucess: false,
                 message: err.message,
             });
         }
     },
-    //product detail.user
+    // api/product/detail/:_id
     productDetail: async (req, res) => {
         try {
-            const productDetail = await ProductModel.findById(req.params._id).populate('category');
+            const productDetail = await ProductModel.findById(req.params._id);
             if (!productDetail) {
-                res.status(500).json({
+                return res.status(404).json({
                     sucess: false,
+                    message: 'The product not found!',
                 });
             }
-            res.send(productDetail);
+            return res.status(200).send(productDetail);
         } catch (error) {
-            res.status(500).json({
+            return res.status(500).json({
                 sucess: false,
                 message: error.message,
             });
         }
     },
-    //[POST] /api/newproduct [admin]
+    //[POST] /api/newproduct
     createNewproduct: async (req, res, next) => {
         try {
             //console.log(filedata);
@@ -58,7 +78,7 @@ const productController = {
             const newProduct = await new ProductModel({
                 name_product: req.body.name_product,
                 oldPrice_product: req.body.oldPrice_product,
-                newPrice_Product: req.body.newPrice_Product,
+                newPrice_product: req.body.newPrice_product,
                 size: req.body.size,
                 image: req.file.path,
                 quantity: req.body.quantity,
@@ -70,21 +90,21 @@ const productController = {
             // if (!newProduct) {
             //     res.status(500).send('the product cannot be created');
             // }
-            res.send(newProduct);
+            return res.status(200).send(newProduct);
         } catch (error) {
             if (req.file) {
                 cloudinary.uploader.destroy(req.file.filename);
             }
-            res.status(500).json({ error: error.message });
+            return res.status(500).json({ error: error.message });
         }
     },
-    //[PUT] /api/product/update/:_id [ADMIN]
+    //[PUT] /api/product/edit/:_id
     updateProduct: async (req, res, next) => {
         try {
             const updatedProductData = {
                 name_product: req.body.name_product,
-                oldPrice_product: req.body.price_product,
-                newPrice_Product: req.body.newPrice_Product,
+                oldPrice_product: req.body.oldPrice_product,
+                newPrice_product: req.body.newPrice_product,
                 size: req.body.size,
                 image: req.file.path,
                 quantity: req.body.quantity,
@@ -101,15 +121,15 @@ const productController = {
                     new: true,
                 },
             );
+            return res.status(200).json({
+                message: 'Updated product sucessfully',
+                data: updatedProduct,
+            });
         } catch (error) {
             return res.status(500).json({ error: error.message });
         }
-        return res.status(200).json({
-            message: 'Updated product sucessfully',
-            data: updatedProduct,
-        });
     },
-    //[DELETE] /api/product/delete/:_id [ADMIN]
+    //[DELETE] /api/product/delete/:_id
     deleteProduct: async (req, res, next) => {
         try {
             const deleteProduct = await ProductModel.findByIdAndRemove(req.params._id);
@@ -126,6 +146,32 @@ const productController = {
             }
         } catch (error) {
             return res.status(500).json({
+                sucess: false,
+                message: error.message,
+            });
+        }
+    },
+    // api/search
+    searchProduct: async (req, res, next) => {
+        try {
+            const search = req.query.search;
+            const product_data = await ProductModel.find({
+                name_product: { $regex: '.*' + search + '.*', $options: 'i' },
+            });
+            if (product_data.length > 0) {
+                res.status(200).json({
+                    sucess: true,
+                    msg: 'Products details',
+                    data: product_data,
+                });
+            } else {
+                res.status(200).json({
+                    sucess: true,
+                    msg: 'Products not found!',
+                });
+            }
+        } catch (error) {
+            res.status(500).json({
                 sucess: false,
                 message: error.message,
             });

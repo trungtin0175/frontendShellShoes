@@ -9,12 +9,10 @@ const ProductSchema = new Schema({
     oldPrice_product: {
         type: Number,
     },
-    newPrice_Product: {
+    newPrice_product: {
         type: Number,
     },
-    size: {
-        type: [],
-    },
+    size: [],
     image: {
         type: String,
     },

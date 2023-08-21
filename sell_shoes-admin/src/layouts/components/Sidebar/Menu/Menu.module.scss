@@ -18,6 +18,9 @@
     background-color: rgba(22, 24, 35, 0.03);
     // background-color: #f1f5f9;
   }
+  &:first-child {
+    margin-top: 40px;
+  }
 }
 .title {
   // margin-left: 10px;

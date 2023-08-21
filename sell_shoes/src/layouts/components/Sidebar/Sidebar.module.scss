@@ -41,10 +41,30 @@
 
 .sort-title {
     // transform: translateY(0);
+    // position: relative;
     transition: transform 0.3s linear;
     &.active {
         transform: translateY(-100%);
     }
+}
+// .icon-sort {
+//     transition: transform 0.3s linear;
+//     &.active {
+//         transform: rotate(-90deg);
+//     }
+// }
+.icon-sort,
+.icon-price {
+    position: absolute;
+    right: 10px;
+    top: 6px;
+    z-index: 100;
+    color: var(--white);
+    transition: transform 0.3s linear;
+    &.active {
+        transform: rotate(-90deg);
+    }
+    // transform: rotate(10%);
 }
 .sort-title,
 .price-title {
@@ -74,6 +94,9 @@
         cursor: pointer;
         background-color: var(--primary-new);
     }
+    &.active {
+        color: var(--primary);
+    }
 }
 .price {
     // flex-grow: 1;
@@ -84,6 +107,7 @@
 }
 .price-title {
     transition: transform 0.3s ease-in;
+    // position: relative;
     &.active {
         transform: translateY(-100%);
     }

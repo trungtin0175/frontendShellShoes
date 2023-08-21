@@ -28,17 +28,21 @@
     display: flex;
     border-top: 1px solid var(--primary);
     padding: 20px 0;
+    align-items: center;
+    justify-content: space-between;
 }
 .body-left,
 .body-right,
 .body-product {
     display: flex;
     align-items: center;
-    justify-content: center;
+    // justify-content: center;
 }
 .body-left {
     width: 46.27949%;
     padding-right: 14px;
+    display: flex;
+    justify-content: space-between;
 }
 .body-check {
     // margin-right: 10px;
@@ -49,6 +53,7 @@
     cursor: pointer;
 }
 .body-products {
+    width: 100%;
 }
 .body-product {
     // width: 318px;
@@ -68,8 +73,30 @@
     display: flex;
     justify-content: space-around;
 }
+.body-size {
+    display: flex;
+    position: relative;
+}
+.body-size_wrapper {
+}
+.body-size_icon {
+    font-size: 1rem;
+    cursor: pointer;
+    padding-left: 4px;
+}
+.body-size_change {
+    position: absolute;
+    right: 0;
+    z-index: 5;
+    display: none;
+
+    &.active {
+        display: block;
+    }
+}
 .body-price {
     font-size: 1.4rem;
+    margin-left: 28px;
 }
 .body-action {
     display: flex;
@@ -141,5 +168,49 @@
     &:hover {
         cursor: pointer;
         background-color: (--primary-hover);
+    }
+}
+.wrapper-no {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.cart-img {
+    width: 300px;
+    height: auto;
+}
+.cart-heading {
+    font-size: 30px;
+    color: var(--text-color);
+    margin: 20px 0;
+}
+.cart-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 40px;
+    color: var(--white);
+    background-color: var(--primary);
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+.buy-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100px;
+    height: 35px;
+    background-color: var(--primary);
+    border-radius: 3px;
+    color: var(--white);
+    margin-right: 14px;
+
+    &:hover {
+        cursor: pointer;
+        background-color: var(--primary-hover);
     }
 }

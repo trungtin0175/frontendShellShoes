@@ -2,58 +2,102 @@ import classNames from "classnames/bind";
 import styles from "./User.module.scss";
 import config from "~/config";
 import { Button, Input, Space, Table } from "antd";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const cx = classNames.bind(styles);
-const data = [
-  {
-    id: 1,
-    name: "Trần Trung Tín",
-    numberphone: 905111111,
-    email: "trungtin@gmail.com",
-    order: 0,
-  },
-  {
-    id: 2,
-    name: "Trần Trung Nguyên",
-    numberphone: 905111111,
-    email: "trungtin@gmail.com",
-    order: 4,
-  },
-  {
-    id: 3,
-    name: "Trần Trung Tèo",
-    numberphone: 905111111,
-    email: "trungtin@gmail.com",
-    order: 2,
-  },
-  {
-    id: 4,
-    name: "Trần Trung Tín",
-    numberphone: 905111111,
-    email: "trungtin@gmail.com",
-    order: 0,
-  },
-  {
-    id: 5,
-    name: "Trần Trung Tín",
-    numberphone: 905111111,
-    email: "trungtin@gmail.com",
-    order: 3,
-  },
-  {
-    id: 6,
-    name: "Trần Trung Tín",
-    numberphone: 905111111,
-    email: "trungtin@gmail.com",
-    order: 1,
-  },
-];
-function Home() {
+
+// const data = [
+//   {
+//     id: 1,
+//     name: "Trần Trung Tín",
+//     numberphone: 905111111,
+//     email: "trungtin@gmail.com",
+//     order: 0,
+//   },
+//   {
+//     id: 2,
+//     name: "Trần Trung Nguyên",
+//     numberphone: 905111111,
+//     email: "trungtin@gmail.com",
+//     order: 4,
+//   },
+//   {
+//     id: 3,
+//     name: "Trần Trung Tèo",
+//     numberphone: 905111111,
+//     email: "trungtin@gmail.com",
+//     order: 2,
+//   },
+//   {
+//     id: 4,
+//     name: "Trần Trung Tín",
+//     numberphone: 905111111,
+//     email: "trungtin@gmail.com",
+//     order: 0,
+//   },
+//   {
+//     id: 5,
+//     name: "Trần Trung Tín",
+//     numberphone: 905111111,
+//     email: "trungtin@gmail.com",
+//     order: 3,
+//   },
+//   {
+//     id: 6,
+//     name: "Trần Trung Tín",
+//     numberphone: 905111111,
+//     email: "trungtin@gmail.com",
+//     order: 1,
+//   },
+// ];
+function User() {
+  const user = useSelector((state) => state.user.accessToken);
+
+  const [data, setData] = useState([]);
+  const [order, setOrder] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/admin/allusers", {
+        headers: {
+          token: `Bearer ${user}`,
+        },
+      })
+      .then((response) => {
+        setData(response.data);
+        console.log("userLength", response.data.length);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [user]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/order/all", {
+        headers: {
+          token: `Bearer ${user}`,
+        },
+      })
+      .then((respone) => {
+        // const orderData = {};
+        // respone.data.forEach((order) => {
+        //   orderData[order.id_user] = order;
+        // });
+        // setOrder(orderData);
+        setOrder(respone.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  console.log("order", order);
   const searchInput = useRef(null);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -166,17 +210,17 @@ function Home() {
     {
       key: "1",
       title: "ID",
-      dataIndex: "id",
+      dataIndex: "_id",
     },
     {
       key: "2",
       title: "Name",
-      dataIndex: "name",
-      ...getColumnSearchProps("name"),
+      dataIndex: "fullname",
+      ...getColumnSearchProps("fullname"),
     },
     {
       key: "3",
-      title: "NumberPhone",
+      title: "Number phone",
       dataIndex: "numberphone",
     },
     {
@@ -187,8 +231,22 @@ function Home() {
     {
       key: "5",
       title: "Order",
-      dataIndex: "order",
-      sorter: (a, b) => a.order - b.order,
+      dataIndex: "_id",
+      render: (userId) => {
+        const userOrders = order.filter((order) => order.id_user === userId); // Lọc đơn hàng cho người dùng
+        const numberOfOrders = userOrders.length; // Số lượng đơn hàng
+        return numberOfOrders;
+      },
+      sorter: (a, b) => {
+        const numberOfOrdersA = order.filter(
+          (order) => order.id_user === a._id
+        ).length;
+        const numberOfOrdersB = order.filter(
+          (order) => order.id_user === b._id
+        ).length;
+        return numberOfOrdersA - numberOfOrdersB;
+      },
+      // sorter: (a, b) => a.order - b.order,
       sortDirections: ["descend", "ascend"],
     },
   ];
@@ -201,7 +259,7 @@ function Home() {
             // pagination={false}
             // filterSearch={(input, record) => true}
             columns={colurm}
-            dataSource={data.map((item) => ({ ...item, key: item.id }))}
+            dataSource={data.map((item, index) => ({ ...item, key: index }))}
           ></Table>
         </header>
       </div>
@@ -209,4 +267,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default User;

@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 import styles from "./Product.module.scss";
 import config from "~/config";
 import { Button, Input, Space, Table, Modal } from "antd";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import axios from "axios";
 import {
   SearchOutlined,
@@ -14,52 +14,9 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import ChangeProduct from "~/pages/ChangeProduct";
+import DeleteProduct from "./DeleteProduct";
 
 const cx = classNames.bind(styles);
-// const data = [
-//   {
-//     id: 1,
-//     name: "Giày thể thao nữ MWC - 0533 Giày Sục Thể Thao Nữ Đế Cao Phối Sọc Thể Thao Siêu Cute,Sneaker Êm Chân Đế Bằng Hot Trend",
-//     category: "boot",
-//     price: 2000000,
-//     sl: 20,
-//   },
-//   {
-//     id: 2,
-//     name: "Giày thể thao nữ MWC - 0533 Giày Sục Thể Thao Nữ Đế Cao Phối Sọc Thể Thao Siêu Cute,Sneaker Êm Chân Đế Bằng Hot Trend",
-//     category: "sneaker",
-//     price: 2000000,
-//     sl: 20,
-//   },
-//   {
-//     id: 3,
-//     name: "Giày thể thao nữ MWC - 0533 Giày Sục Thể Thao Nữ Đế Cao Phối Sọc Thể Thao Siêu Cute,Sneaker Êm Chân Đế Bằng Hot Trend",
-//     category: "sneaker",
-//     price: 2000000,
-//     sl: 20,
-//   },
-//   {
-//     id: 4,
-//     name: "Giày thể thao nữ MWC - 0533 Giày Sục Thể Thao Nữ Đế Cao Phối Sọc Thể Thao Siêu Cute,Sneaker Êm Chân Đế Bằng Hot Trend",
-//     category: "dép",
-//     price: 2000000,
-//     sl: 20,
-//   },
-//   {
-//     id: 5,
-//     name: "Giày thể thao nữ MWC - 0533 Giày Sục Thể Thao Nữ Đế Cao Phối Sọc Thể Thao Siêu Cute,Sneaker Êm Chân Đế Bằng Hot Trend",
-//     category: "sneaker",
-//     price: 2000000,
-//     sl: 20,
-//   },
-//   {
-//     id: 6,
-//     name: "Giày thể thao nữ MWC - 0533 Giày Sục Thể ",
-//     category: "sneaker",
-//     price: 2000000,
-//     sl: 20,
-//   },
-// ];
 function Product() {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
@@ -67,6 +24,7 @@ function Product() {
   const [open, setOpen] = useState(false);
   const [productData, setProductData] = useState([]);
   const [selectedProductId, setSelectedProductId] = useState(null);
+  const [dele, setDele] = useState(false);
 
   useEffect(() => {
     axios
@@ -96,6 +54,11 @@ function Product() {
           }}
         />
         <DeleteOutlined
+          onClick={() => {
+            setSelectedProductId(categoryId);
+            setDele(true);
+            console.log(categoryId);
+          }}
           style={{ color: "red", fontSize: "20px", cursor: "pointer" }}
         />
       </div>
@@ -217,29 +180,24 @@ function Product() {
       key: "2",
       title: "Name",
       dataIndex: "name_product",
-      ...getColumnSearchProps("name"),
+      ...getColumnSearchProps("name_product"),
     },
     {
       key: "3",
       title: "Category",
       dataIndex: "id_category",
-      ...getColumnSearchProps("id_category"),
+      ...getColumnSearchProps("id_category.category"),
+      render: (id_category) => <>{id_category.category}</>,
+      filters: productData.map((item) => ({
+        text: item.id_category.category,
+        value: item.id_category.category,
+      })), // Create filters using unique category values
+      onFilter: (value, record) => record.id_category.category.includes(value),
     },
-    // {
-    //   key: "3",
-    //   title: "Product",
-    //   dataIndex: "id_category",
-    //   render: (record) => ({
-    //     // Lấy giá trị "sneaker" từ id_category và hiển thị nó
-    //     // trong thuộc tính children của cell
-    //     children: record.id_category.category,
-    //   }),
-    //   ...getColumnSearchProps("id_category"),
-    // },
     {
       key: "4",
       title: "Price",
-      dataIndex: "newPrice_Product",
+      dataIndex: "newPrice_product",
       sorter: (a, b) => a.price - b.price,
       sortDirections: ["descend", "ascend"],
     },
@@ -251,7 +209,7 @@ function Product() {
       sortDirections: ["descend", "ascend"],
     },
     {
-      key: "5",
+      key: "6",
       title: "Action",
       dataIndex: "sl",
       render: (text, record) => rederAction(record._id),
@@ -288,6 +246,18 @@ function Product() {
         style={{ marginTop: 30 }}
       >
         <ChangeProduct productId={selectedProductId} />
+      </Modal>
+      <Modal
+        // title="Thay đổi sản phẩm"
+        centered
+        open={dele}
+        footer={null}
+        // onOk={() => setOpen(false)}
+        onCancel={() => setDele(false)}
+        width={1000}
+        style={{ marginTop: 30 }}
+      >
+        <DeleteProduct productId={selectedProductId} />
       </Modal>
     </div>
   );

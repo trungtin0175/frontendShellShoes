@@ -32,7 +32,7 @@ function Register() {
         try {
             const res = await registerUser(data);
             //
-            toast.success('register successful', {
+            toast.success('Đăng ký tài khoản thành công!', {
                 autoClose: 1000,
             });
             setTimeout(() => navigate(config.routes.login), 2000);
@@ -41,7 +41,7 @@ function Register() {
             console.log(error);
             if (error?.response?.data.message) {
                 toast.error(error.response.data.message);
-            } else toast.error('register failure, please check your connect and try again');
+            } else toast.error('Đăng ký thất bai, vui lòng kiểm tra lại kết nối!');
         }
     };
     return (

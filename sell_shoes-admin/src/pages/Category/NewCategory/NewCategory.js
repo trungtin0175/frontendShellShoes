@@ -4,9 +4,12 @@ import axios from "axios";
 import { useState, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from "react-redux";
 
 const cx = classNames.bind(styles);
 function NewProduct() {
+  const user = useSelector((state) => state.user.accessToken);
+
   const [post, setPost] = useState({
     category: "",
     image: null,
@@ -40,16 +43,21 @@ function NewProduct() {
     try {
       const response = await axios.post(
         "http://localhost:3000/api/category/create",
-        formData
+        formData,
+        {
+          headers: {
+            token: `Bearer ${user}`,
+          },
+        }
       );
       // console.log(response);
-      toast.success("Submit successful", {
+      toast.success("Thêm thành công!", {
         autoClose: 1000,
       });
       handleClearAll();
     } catch (error) {
       console.error(error);
-      toast.error("Submit failure, please check your connect and try again");
+      toast.error("Thất bại, vui lòng kiểm tra lại kết nối!");
     }
   };
   return (

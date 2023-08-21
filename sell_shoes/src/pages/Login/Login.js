@@ -29,12 +29,30 @@ function Login() {
             password: '',
         },
     });
+    // const onSubmit = async (data) => {
+    //     try {
+    //         const res = await UserService.loginUser(data);
+    //         // console.log(res);
+    //         dispatch(updateUser(res.user));
+    //         toast.success('login successful', { autoClose: 1000 });
+    //         setTimeout(() => navigate(config.routes.home), 2000);
+    //         console.log(res);
+    //         // navigate('/');
+    //     } catch (error) {
+    //         console.log(error);
+    //         if (error?.response?.data.message) {
+    //             toast.error(error.response.data.message);
+    //         } else {
+    //             toast.error('login failure, please check your connect and try again');
+    //         }
+    //     }
+    // };
     const onSubmit = async (data) => {
         try {
             const res = await UserService.loginUser(data);
 
             dispatch(updateUser(res));
-            toast.success('login successful', { autoClose: 1000 });
+            toast.success('Đăng nhập thành công', { autoClose: 1000 });
             setTimeout(() => navigate(config.routes.home), 2000);
             console.log(res);
             // navigate('/');
@@ -43,7 +61,7 @@ function Login() {
             if (error?.response?.data.message) {
                 toast.error(error.response.data.message);
             } else {
-                toast.error('login failure, please check your connect and try again');
+                toast.error('Đăng nhập thất bại, vui lòng kiểm tra lại kết nối!');
             }
         }
     };

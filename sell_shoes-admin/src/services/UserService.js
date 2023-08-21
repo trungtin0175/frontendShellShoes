@@ -1,4 +1,5 @@
 import axios from "axios";
+
 // import {
 //     loginFailed,
 //     loginStart,
@@ -9,11 +10,11 @@ import axios from "axios";
 //     registerStart,
 //     registerSuccess,
 // } from '../redux/authSlice';
-
 export const loginUser = async (user) => {
   const res = await axios.post("http://localhost:3000/api/login", user);
   console.log(res);
-  return res.data.user;
+  // return res.data.user;
+  return res.data;
 };
 
 export const registerUser = async (user) => {

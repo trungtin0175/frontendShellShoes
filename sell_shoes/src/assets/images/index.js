@@ -9,5 +9,14 @@ const images = {
     policy4: require('~/assets/images/policy4.jpg'),
     policy5: require('~/assets/images/policy5.jpg'),
     policy6: require('~/assets/images/policy6.jpg'),
+    banner1: require('~/assets/images/banner1.jpg'),
+    banner2: require('~/assets/images/banner2.jpg'),
+    banner3: require('~/assets/images/baner3.jpg'),
+    banner4: require('~/assets/images/banner4.jpg'),
+    Facebook_Logo: require('~/assets/images/Facebook_Logo.png'),
+    Instagram_logo: require('~/assets/images/Instagram_logo.png'),
+    Logo_Zalo: require('~/assets/images/Logo_Zalo.png'),
+    cart: require('~/assets/images/cart.jpg'),
+    user: require('~/assets/images/user.jpg'),
 };
 export default images;

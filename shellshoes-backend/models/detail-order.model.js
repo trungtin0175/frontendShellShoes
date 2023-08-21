@@ -16,9 +16,11 @@ const DetailOrderSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'product',
     },
-    id_order: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'order',
+    unit_price: {
+        type: Number,
+    },
+    price: {
+        type: Number,
     },
 });
 

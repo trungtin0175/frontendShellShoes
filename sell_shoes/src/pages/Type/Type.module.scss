@@ -7,3 +7,12 @@
 .container {
     flex: 1;
 }
+.no-product {
+    min-height: 300px;
+    background-color: var(--white);
+    font-size: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}

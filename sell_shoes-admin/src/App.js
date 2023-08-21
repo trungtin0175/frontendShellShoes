@@ -28,13 +28,16 @@ function App() {
                 key={index}
                 path={route.path}
                 element={
-                  // !isLoggedIn ? (
-                  //   <Navigate to={config.routes.login} />
-                  // ) : (
-                  <Layout>
-                    <Page />
-                  </Layout>
-                  // )
+                  !isLoggedIn ? (
+                    <Layout>
+                      <Navigate to={config.routes.login} />
+                      <Page />
+                    </Layout>
+                  ) : (
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  )
                 }
               />
             );

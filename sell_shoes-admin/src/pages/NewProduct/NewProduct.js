@@ -4,13 +4,18 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from "react-redux";
 
 const cx = classNames.bind(styles);
 function NewProduct() {
+  // const users = useSelector((state) => state.user.fullname);
+  // console.log(users);
+  const user = useSelector((state) => state.user.accessToken);
+
   const [formData, setFormData] = useState({
     name_product: "",
     oldPrice_product: "",
-    newPrice_Product: "",
+    newPrice_product: "",
     size: [],
     image: null,
     quantity: "",
@@ -38,7 +43,7 @@ function NewProduct() {
       [name]:
         name === "quantity"
           ? parseInt(value)
-          : name === "newPrice_Product" || name === "oldPrice_product"
+          : name === "newPrice_product" || name === "oldPrice_product"
           ? parseFloat(value)
           : value,
     });
@@ -69,7 +74,7 @@ function NewProduct() {
     const form = new FormData();
     form.append("name_product", formData.name_product);
     form.append("oldPrice_product", formData.oldPrice_product);
-    form.append("newPrice_Product", formData.newPrice_Product);
+    form.append("newPrice_product", formData.newPrice_product);
     form.append("size", formData.size);
     form.append("quantity", formData.quantity);
     form.append("describe", formData.describe);
@@ -81,14 +86,19 @@ function NewProduct() {
     try {
       const response = await axios.post(
         "http://localhost:3000/api/newproduct",
-        form
+        form,
+        {
+          headers: {
+            token: `Bearer ${user}`,
+          },
+        }
       );
-      toast.success("Submit successful", {
+      toast.success("Thêm sản phẩm thành công!", {
         autoClose: 1000,
       });
     } catch (error) {
       console.error(error);
-      toast.error("Submit failure, please check your connect and try again");
+      toast.error("Thất bại, vui lòng kiểm tra lại kết nối!");
     }
   };
   return (
@@ -130,14 +140,14 @@ function NewProduct() {
             </div>
             <div className={cx("form-group")}>
               <label htmlFor="newprice" className={cx("form-label")}>
-                Giá mới của sản phẩm
+                Giá khuyến mãi của sản phẩm
               </label>
               <input
-                id="newPrice_Product"
+                id="newPrice_product"
                 type="text"
                 placeholder="Nhập giá mới của sản phẩm"
                 className={cx("form-control")}
-                name="newPrice_Product"
+                name="newPrice_product"
                 onChange={handleInputChange}
               />
             </div>
@@ -154,6 +164,7 @@ function NewProduct() {
               onChange={handleSizeChange}
               value={formData.size}
             >
+              <option value={35}>34</option>
               <option value={35}>35</option>
               <option value={36}>36</option>
               <option value={37}>37</option>
@@ -162,6 +173,7 @@ function NewProduct() {
               <option value={40}>40</option>
               <option value={41}>41</option>
               <option value={42}>42</option>
+              <option value={42}>43</option>
             </select>
           </div>
           <div className={cx("form-group")}>
@@ -205,7 +217,7 @@ function NewProduct() {
               className={cx("form-control")}
               name="detail"
               onChange={handleInputChange}
-              rows="4"
+              rows="1"
               style={{
                 height: "100px",
               }}
@@ -213,12 +225,11 @@ function NewProduct() {
           </div>
           <div className={cx("form-group")}>
             <label htmlFor="image" className={cx("form-label")}>
-              Hình ảnh của sản phẩm (4 ảnh)
+              Hình ảnh của sản phẩm
             </label>
             <input
               id="image"
               type="file"
-              multiple
               accept=".jpg, .png"
               placeholder="Nhập chi tiết của sản phẩm"
               className={cx("form-control")}
@@ -244,7 +255,9 @@ function NewProduct() {
               ))}
             </select>
           </div>
-          <button className={cx("form-submit")}>Đăng tải</button>
+          <button onClick={handleClear} className={cx("form-submit")}>
+            Đăng tải
+          </button>
           <ToastContainer />
         </form>
       </div>

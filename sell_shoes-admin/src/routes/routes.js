@@ -9,6 +9,7 @@ import Category from "~/pages/Category";
 import Product from "~/pages/Product";
 import NewProduct from "~/pages/NewProduct";
 import Login from "~/pages/Login";
+import Order from "~/pages/Order";
 
 const publicRoutes = [
   { path: config.routes.home, component: Home },
@@ -17,6 +18,7 @@ const publicRoutes = [
   { path: config.routes.category, component: Category },
   { path: config.routes.newproduct, component: NewProduct },
   { path: config.routes.login, component: Login, layout: null },
+  { path: config.routes.order, component: Order },
 ];
 
 const privateRoutes = [];

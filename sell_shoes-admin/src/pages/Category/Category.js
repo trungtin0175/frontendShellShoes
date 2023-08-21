@@ -15,6 +15,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import NewCategory from "~/pages/Category/NewCategory";
 import ChangeCategory from "~/pages/Category/ChangeCategory";
 import axios from "axios";
+import DeleteCategory from "./DeleteCategory/DeleteCategory";
 
 const cx = classNames.bind(styles);
 function Product() {
@@ -26,6 +27,7 @@ function Product() {
   const searchInput = useRef(null);
   const [open, setOpen] = useState(false);
   const [create, setCreate] = useState(false);
+  const [dele, setDele] = useState(false);
 
   useEffect(() => {
     axios
@@ -54,6 +56,10 @@ function Product() {
           }}
         />
         <DeleteOutlined
+          onClick={() => {
+            setSelectedCategoryId(categoryId);
+            setDele(true);
+          }}
           style={{ color: "red", fontSize: "20px", cursor: "pointer" }}
         />
       </div>
@@ -241,6 +247,18 @@ function Product() {
         style={{ marginTop: 30 }}
       >
         <NewCategory />
+      </Modal>
+      <Modal
+        // title="Thay đổi sản phẩm"
+        centered
+        open={dele}
+        footer={null}
+        // onOk={() => setOpen(false)}
+        onCancel={() => setDele(false)}
+        width={1000}
+        style={{ marginTop: 30 }}
+      >
+        <DeleteCategory categoryId={selectedCategoryId} />
       </Modal>
     </div>
   );

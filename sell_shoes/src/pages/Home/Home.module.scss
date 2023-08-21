@@ -47,3 +47,8 @@
 }
 .scroll-icon {
 }
+@media (max-width: 739px) {
+    .wrapper {
+        overflow: hidden;
+    }
+}

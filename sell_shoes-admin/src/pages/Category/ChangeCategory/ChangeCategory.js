@@ -5,9 +5,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
 const cx = classNames.bind(styles);
 function ChangeCategory({ categoryId }) {
+  const user = useSelector((state) => state.user.accessToken);
+
   const [category, setCategory] = useState({
     category: "",
     image: null,
@@ -38,15 +41,20 @@ function ChangeCategory({ categoryId }) {
     try {
       const response = await axios.put(
         `http://localhost:3000/api/category/edit/${categoryId}`,
-        formData
+        formData,
+        {
+          headers: {
+            token: `Bearer ${user}`,
+          },
+        }
       );
-      toast.success("Submit successful", {
+      toast.success("Thay đổi thành công!", {
         autoClose: 1000,
       });
       handleClearAll();
     } catch (error) {
       console.error(error);
-      toast.error("Submit failure, please check your connect and try again");
+      toast.error("Thất bại, vui lòng kiểm tra lại kết nối!");
     }
   };
   // useEffect(() => {

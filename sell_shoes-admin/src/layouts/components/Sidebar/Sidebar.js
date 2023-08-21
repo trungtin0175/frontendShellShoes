@@ -8,6 +8,7 @@ import {
   faList,
   faSignOut,
   faTableCells,
+  faBagShopping,
 } from "@fortawesome/free-solid-svg-icons";
 import config from "~/config";
 import Menu, { MenuItem } from "./Menu";
@@ -37,6 +38,11 @@ function Sidebar() {
           title="Category"
           to={config.routes.category}
           icon={<FontAwesomeIcon icon={faTableCells} />}
+        />
+        <MenuItem
+          title="Order"
+          to={config.routes.order}
+          icon={<FontAwesomeIcon icon={faBagShopping} />}
         />
       </Menu>
     </aside>
