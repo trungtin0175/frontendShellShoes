@@ -62,6 +62,7 @@ function Order() {
     const [count, setCount] = useState(null);
 
     console.log('data', data);
+    console.log('newData', newData);
     useEffect(() => {
         setNewData([...data]);
     }, [data]);
@@ -151,7 +152,8 @@ function Order() {
                 {Array.isArray(newData) && newData.length !== 0 ? (
                     newData.map((pro, index) => (
                         <div key={index} className={cx('content')}>
-                            <Link key={index} to={config.routes.orderDetail}>
+                            {/* <Link key={index} to={config.routes.orderDetail}> */}
+                            <Link key={index} to={`/api/order/detail/${pro._id}`}>
                                 <div className={cx('content-top')}>
                                     <div className={cx('content-column')}>
                                         {Array.isArray(pro.orderProducts) && pro.orderProducts.length !== 0 ? (

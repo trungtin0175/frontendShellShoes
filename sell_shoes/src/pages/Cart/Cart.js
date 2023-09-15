@@ -14,6 +14,8 @@ import ChangeSize from '~/pages/Cart/ChangeSize';
 import { ProductContext } from '~/layouts/HeaderOnly/HeaderOnly';
 import { LengthContext } from '~/App';
 import { IdCartItemContext } from '~/layouts/HeaderOnly/HeaderOnly';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const cx = classNames.bind(styles);
 
@@ -105,6 +107,7 @@ function Cart() {
                     token: `Bearer ${token}`,
                 },
             });
+            toast.success('Xóa thành công', { autoClose: 1000 });
             setDele(!dele);
             setLengthCart(response.data.length);
         } catch (error) {
@@ -128,7 +131,7 @@ function Cart() {
         setAllPrice(totalPrice);
         setAllQuantity(totalQuantity);
     }, [selectedProducts, products]);
-    console.log('dmm', products);
+    // console.log('dmm', products);
 
     const handleCheckboxChange = (productId) => {
         console.log('productId', productId);
@@ -267,6 +270,7 @@ function Cart() {
                         </div>
                         {/* <div className={cx('footer-buy')}>Mua Hàng</div> */}
                     </div>
+                    <ToastContainer />
                 </div>
             ) : (
                 <div className={cx('wrapper-no')}>

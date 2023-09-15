@@ -1,12 +1,13 @@
 import classNames from "classnames/bind";
 import styles from "./User.module.scss";
 import config from "~/config";
-import { Button, Input, Space, Table } from "antd";
+import { Button, Input, Space, Table, Modal } from "antd";
 import { useState, useRef, useEffect, useContext } from "react";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, DeleteOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import DeleteUser from "./DeleteUser";
 
 const cx = classNames.bind(styles);
 
@@ -61,6 +62,8 @@ function User() {
   const [order, setOrder] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [open, setOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   useEffect(() => {
     axios
@@ -97,7 +100,22 @@ function User() {
         console.log(error);
       });
   }, []);
+  const rederAction = (userId) => {
+    return (
+      <div style={{ display: "flex" }}>
+        <DeleteOutlined
+          onClick={() => {
+            setSelectedUserId(userId);
+            setOpen(true);
+            console.log("userID123", userId);
+          }}
+          style={{ color: "red", fontSize: "20px", cursor: "pointer" }}
+        />
+      </div>
+    );
+  };
   console.log("order", order);
+  console.log("user", data);
   const searchInput = useRef(null);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -249,6 +267,12 @@ function User() {
       // sorter: (a, b) => a.order - b.order,
       sortDirections: ["descend", "ascend"],
     },
+    {
+      key: "6",
+      title: "Action",
+      dataIndex: "_id",
+      render: (text, userId) => rederAction(userId._id),
+    },
   ];
   return (
     <div className={cx("wrapper")}>
@@ -262,6 +286,18 @@ function User() {
             dataSource={data.map((item, index) => ({ ...item, key: index }))}
           ></Table>
         </header>
+        <Modal
+          // title="Thay đổi sản phẩm"
+          centered
+          open={open}
+          footer={null}
+          // onOk={() => setOpen(false)}
+          onCancel={() => setOpen(false)}
+          width={1000}
+          style={{ marginTop: 30 }}
+        >
+          <DeleteUser userId={selectedUserId} />
+        </Modal>
       </div>
     </div>
   );

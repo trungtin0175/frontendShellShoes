@@ -581,7 +581,7 @@ function ChangeProduct({ productId }) {
           </div>
           <div className={cx("form-group")}>
             <label htmlFor="image" className={cx("form-label")}>
-              Hình ảnh của sản phẩm (4 ảnh)
+              Hình ảnh của sản phẩm
             </label>
             <input
               id="image"

@@ -11,17 +11,25 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from 'react-redux';
 import { LengthContext } from '~/App';
+import config from '~/config';
+import { Link, useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
 function ActionAdd({ dataCart }) {
     const token = useSelector((state) => state.user.accessToken);
+    const navigate = useNavigate();
+
     // console.log(token);
     const { id_product, quantity, size } = dataCart;
     const { setLengthCart } = useContext(LengthContext);
     // console.log(dataCart);
 
     const handleAdd = async (e) => {
+        if (!token) {
+            navigate(config.routes.login);
+            return;
+        }
         e.preventDefault();
         try {
             const payload = {

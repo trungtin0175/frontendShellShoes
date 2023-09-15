@@ -10,19 +10,26 @@ import { resetUser } from '~/redux/userSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBagShopping } from '@fortawesome/free-solid-svg-icons';
 import config from '~/config';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Button, Modal, Space } from 'antd';
+import ChangeProfile from './ChangeProfile';
 
 const cx = classNames.bind(styles);
 function Profile() {
     const { id } = useParams();
     // const [user, setUser] = useState({});
     const user = useSelector((state) => state.user);
-    // console.log({ user });
+    const [open, setOpen] = useState(false);
+    console.log('id', user._id);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const handleLogout = () => {
         dispatch(resetUser());
         navigate('/');
+    };
+    const handleChange = () => {
+        setOpen(true);
     };
     return (
         <div className={cx('wrapper')}>
@@ -66,7 +73,22 @@ function Profile() {
                         <span className={cx('info-title')}>Email: </span>
                         <p className={cx('info-describe')}>{user?.email}</p>
                     </div>
+                    <button onClick={handleChange} className={cx('change')}>
+                        Đổi thông tin tài khoản
+                    </button>
                 </div>
+                <Modal
+                    // title="Thay đổi sản phẩm"
+                    centered
+                    open={open}
+                    footer={null}
+                    // onOk={() => setOpen(false)}
+                    onCancel={() => setOpen(false)}
+                    width={1000}
+                    style={{ marginTop: 30 }}
+                >
+                    <ChangeProfile userId={user._id} />
+                </Modal>
             </div>
             <button onClick={handleLogout} className={cx('logout')}>
                 Đăng xuất

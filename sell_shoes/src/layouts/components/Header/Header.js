@@ -57,11 +57,27 @@ function Header() {
             .catch((error) => {
                 console.log(error);
             });
-    }, [lengthCart]);
+    }, [lengthCart, actiive, token]);
     console.log('alert', alert);
     console.log('lengthalert', lengthAlert);
     // setCount(!count);
     console.log('123', products);
+    const handleRead = async (id) => {
+        try {
+            const response = await axios.put(
+                `http://localhost:3000/api/alert/read/${id}`,
+                { read: true },
+                {
+                    headers: {
+                        token: `Bearer ${token}`,
+                    },
+                },
+            );
+            setActive(!actiive);
+        } catch (error) {
+            console.log(error);
+        }
+    };
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -89,7 +105,11 @@ function Header() {
                             <div className={cx('bell-list-wrapper')}>
                                 {Array.isArray(alert) && alert.length !== 0 ? (
                                     alert.map((item, index) => (
-                                        <li key={index} className={cx('bell-item')}>
+                                        <li
+                                            onClick={() => handleRead(item._id)}
+                                            key={index}
+                                            className={cx('bell-item')}
+                                        >
                                             <Link
                                                 to={config.routes.order}
                                                 className={cx('bell-item-link', { active: !item.read })}

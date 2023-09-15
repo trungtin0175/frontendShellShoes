@@ -88,7 +88,7 @@ function ChangeCategory({ categoryId }) {
               name="category"
               value={category.category}
               onChange={handleInputChange}
-              placeholder="Nhập tên sản phẩm"
+              placeholder="Nhập tên loại hàng"
               className={cx("form-control")}
             />
           </div>

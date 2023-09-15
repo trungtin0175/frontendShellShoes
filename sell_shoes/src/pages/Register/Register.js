@@ -92,7 +92,7 @@ function Register() {
                                 },
                             })}
                             type="tel"
-                            placeholder="VD: 0901234567"
+                            placeholder="VD = 0901234567"
                             className={cx('form-control')}
                         />
                         {errors.numberphone && dirtyFields.numberphone && (

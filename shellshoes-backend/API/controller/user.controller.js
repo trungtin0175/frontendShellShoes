@@ -50,15 +50,36 @@ const userController = {
             const updatedUser = await AccountModel.findOneAndUpdate(conditionalData, updatedData, {
                 new: true,
             });
+            return res.status(200).json({
+                message: 'Updated User',
+                data: updatedUser,
+            });
         } catch {
             return res.status(500).send(error);
         }
-        return res.status(200).json({
-            message: 'Updated User',
-            data: updatedUser,
-        });
     },
     //[DELETE] /api/user/delete/:_id
+    deleteUser: async (req, res, next) => {
+        try {
+            const deleteUser = await AccountModel.findByIdAndRemove(req.params._id);
+            if (deleteUser) {
+                return res.status(200).json({
+                    sucess: true,
+                    message: 'The user is deleted!',
+                });
+            } else {
+                return res.status(404).json({
+                    sucess: false,
+                    message: 'The user not found',
+                });
+            }
+        } catch (error) {
+            return res.status(500).json({
+                sucess: false,
+                message: error.message,
+            });
+        }
+    },
 };
 
 module.exports = userController;

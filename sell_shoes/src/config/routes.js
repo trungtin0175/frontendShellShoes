@@ -8,7 +8,7 @@ const routes = {
     profile: '/api/user/account',
     search: '/api/search',
     order: '/api/order',
-    orderDetail: '/api/orderDetail',
+    orderDetail: '/api/order/detail/:_id',
     buyNow: '/api/buyNow',
 };
 export default routes;

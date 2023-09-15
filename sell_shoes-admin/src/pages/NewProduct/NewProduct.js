@@ -164,7 +164,7 @@ function NewProduct() {
               onChange={handleSizeChange}
               value={formData.size}
             >
-              <option value={35}>34</option>
+              <option value={34}>34</option>
               <option value={35}>35</option>
               <option value={36}>36</option>
               <option value={37}>37</option>
@@ -173,7 +173,8 @@ function NewProduct() {
               <option value={40}>40</option>
               <option value={41}>41</option>
               <option value={42}>42</option>
-              <option value={42}>43</option>
+              <option value={43}>43</option>
+              <option value={44}>44</option>
             </select>
           </div>
           <div className={cx("form-group")}>

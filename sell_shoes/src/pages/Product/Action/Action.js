@@ -61,6 +61,10 @@ function Action({ products }) {
     };
     const handleAdd = async (e) => {
         e.preventDefault();
+        if (!token) {
+            navigate(config.routes.login);
+            return;
+        }
         try {
             const response = await axios.post('http://localhost:3000/api/add_to_cart', dataCart, {
                 headers: {

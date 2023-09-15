@@ -61,26 +61,32 @@ function Search() {
                 render={(attrs) => (
                     <div className={cx('search-result')} tabIndex="-1" {...attrs}>
                         <PopperWrapper>
-                            {Array.isArray(searchResult) &&
-                                searchResult.map((result) => (
-                                    <Link
-                                        className={cx('search-link')}
-                                        to={`/api/product/detail/${result._id}`}
-                                        key={result._id}
-                                        onClick={() => {
-                                            handleHideResult();
-                                            handleClear();
-                                        }}
-                                    >
-                                        <img src={result.image} alt="search" className={cx('search-result-img')}></img>
-                                        <div className={cx('search-result-info')}>
-                                            <h4 className={cx('search-result-name')}>{result.name_product}</h4>
-                                            <p className={cx('search-result-price')}>
-                                                {result.newPrice_product.toLocaleString()} VNĐ
-                                            </p>
-                                        </div>
-                                    </Link>
-                                ))}
+                            <div className={cx('search-result-wrapper')}>
+                                {Array.isArray(searchResult) &&
+                                    searchResult.map((result) => (
+                                        <Link
+                                            className={cx('search-link')}
+                                            to={`/api/product/detail/${result._id}`}
+                                            key={result._id}
+                                            onClick={() => {
+                                                handleHideResult();
+                                                handleClear();
+                                            }}
+                                        >
+                                            <img
+                                                src={result.image}
+                                                alt="search"
+                                                className={cx('search-result-img')}
+                                            ></img>
+                                            <div className={cx('search-result-info')}>
+                                                <h4 className={cx('search-result-name')}>{result.name_product}</h4>
+                                                <p className={cx('search-result-price')}>
+                                                    {result.newPrice_product.toLocaleString()} VNĐ
+                                                </p>
+                                            </div>
+                                        </Link>
+                                    ))}
+                            </div>
                         </PopperWrapper>
                         {/* <h4 className={cx('search-title')}>Kết quả</h4>
                             <Link className={cx('search-link')}>

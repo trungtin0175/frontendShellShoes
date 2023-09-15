@@ -39,7 +39,7 @@ function Product() {
   }, []);
   const rederAction = (categoryId) => {
     return (
-      <div>
+      <div style={{ display: "flex" }}>
         <EditOutlined
           onClick={() => {
             setSelectedProductId(categoryId);

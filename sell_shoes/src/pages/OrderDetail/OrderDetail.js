@@ -6,44 +6,17 @@ import routes from '~/config/routes';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
-
-// const data = {
-//     _id: 1,
-//     orderProduct: [
-//         {
-//             id: 1,
-//             img: 'https://res.cloudinary.com/dgczeeypr/image/upload/v1691132026/BanGiay/juss6nurwh3rc17enipw.jpg',
-//             name: 'Vans Old Skool Classic Blackádgsdgsdfg đậpVans Old Skool Classic Blackádgsdgsdfg đậpVans Old Skool Classic Blackádgsdgsdfg đập',
-//             quantity: 1,
-//             size: 39,
-//             price: 1000000,
-//             // method: 'VNPAY',
-//         },
-//         {
-//             id: 2,
-//             img: 'https://res.cloudinary.com/dgczeeypr/image/upload/v1691132026/BanGiay/juss6nurwh3rc17enipw.jpg',
-//             name: 'Vans Old Skool Classic Blackádgsdgsdfg đập',
-//             quantity: 1,
-//             size: 39,
-//             price: 1000000,
-//         },
-//     ],
-//     method: 'VNPAY',
-//     address: 'Quận 12 thành phố hồ chí minh',
-//     sdt: '09677777',
-//     name: 'Trần trung Tín',
-//     status: 'Đang chuyển',
-//     dateOrder: '12/08/2023 09:10',
-// };
 
 function OrderDetail() {
     const token = useSelector((state) => state.user.accessToken);
     const [data, setData] = useState([]);
+    const { _id } = useParams();
     useEffect(() => {
         axios
-            .get('http://localhost:3000/api/user/purchase', {
+            .get(`http://localhost:3000/api/order/detail/${_id}`, {
                 headers: {
                     token: `Bearer ${token}`,
                 },
@@ -56,7 +29,7 @@ function OrderDetail() {
                 console.log(error);
             });
     }, []);
-
+    console.log('data', data.length);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
